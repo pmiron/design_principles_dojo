@@ -3,12 +3,17 @@ package com.thoughtworks.game_of_life.core;
 public class DeadCell implements Cell{
 
     @Override
-    public boolean isAlive() {
-        return false;
+    public CellState state() {
+        return CellState.IS_DEAD;
     }
 
     @Override
-    public boolean willBeAlive(int numberOfAliveNeighbours) {
-        return numberOfAliveNeighbours == 3;
+    public CellState willBeAliveNextState(int numberOfAliveNeighbours) {
+        if(numberOfAliveNeighbours >= 4)
+            return CellState.IS_ZOMBIE;
+        else if(numberOfAliveNeighbours == 3)
+            return CellState.IS_ALIVE;
+        else
+            return CellState.IS_DEAD;
     }
 }

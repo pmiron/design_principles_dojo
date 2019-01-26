@@ -32,6 +32,14 @@ public class GameRunner {
         world.setLiving(at(8,3));
         world.setLiving(at(9,2));
 
+        /*
+        world.setLiving(at(5,5));
+        world.setLiving(at(5,4));
+        world.setLiving(at(6,5));
+        world.setLiving(at(6,4));
+        world.setLiving(at(7,5));
+        */
+
         Dimension dimension = new Dimension(TILE_SIZE * World.DEFAULT_WIDTH, TILE_SIZE * World.DEFAULT_HEIGHT);
         canvas = new GameCanvas(dimension, world);
 

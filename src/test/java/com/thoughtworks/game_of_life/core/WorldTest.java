@@ -6,6 +6,7 @@ import org.junit.Test;
 import static com.thoughtworks.game_of_life.core.Location.at;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 
 public class WorldTest {
 
@@ -54,7 +55,7 @@ public class WorldTest {
 
         world.advance();
 
-        assertThat(world.isAlive(at(2, 3)), is(true));
+        assertEquals(world.cellStateAtLocation(at(2, 3)), CellState.IS_ALIVE);
         assertThat(world.isEmpty(), is(false));
     }
 
@@ -68,11 +69,11 @@ public class WorldTest {
 
         world.advance();
 
-        assertThat(world.isAlive(at(2, 3)), is(true));
+        assertEquals(world.cellStateAtLocation(at(2, 3)),  CellState.IS_ALIVE);
     }
 
     @Test
-    public void live_cells_with_more_than_three_live_neighbours_dies() {
+    public void live_cells_with_more_than_three_live_neighbours_becomes_zombie() {
         world.setLiving(at(2, 3));
 
         world.setLiving(at(2, 2));
@@ -82,7 +83,7 @@ public class WorldTest {
 
         world.advance();
 
-        assertThat(world.isAlive(at(2, 3)), is(false));
+        assertEquals(world.cellStateAtLocation(at(2, 3)), CellState.IS_ZOMBIE);
     }
 
     @Test
@@ -94,7 +95,20 @@ public class WorldTest {
 
         world.advance();
 
-        assertThat(world.isAlive(at(2, 3)), is(true));
+        assertEquals(world.cellStateAtLocation(at(2, 3)), CellState.IS_ALIVE);
+    }
+
+    @Test
+    public void alive_cell_with_four_neighbohoud_becomes_zombie(){
+
+        world.setLiving(at(2, 2));
+        world.setLiving(at(2, 4));
+        world.setLiving(at(3, 3));
+        world.setLiving(at(1, 3));
+
+        world.advance();
+
+        assertEquals(world.cellStateAtLocation(at(2, 3)), CellState.IS_ZOMBIE);
     }
 
 

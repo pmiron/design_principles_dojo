@@ -21,8 +21,11 @@ public class World {
         Map<Location, Cell> newCells = initCells();
 
         for (Location location : allWorldLocations(DEFAULT_WIDTH, DEFAULT_HEIGHT)) {
-            if (cells.get(location).willBeAlive(numberOfAliveNeighbours(location))){
+            if (cells.get(location).willBeAliveNextState(numberOfAliveNeighbours(location)) == CellState.IS_ALIVE){
                 newCells.put(location, new AliveCell());
+            }
+            if (cells.get(location).willBeAliveNextState(numberOfAliveNeighbours(location)) == CellState.IS_ZOMBIE){
+                newCells.put(location, new ZombieCell());
             }
         }
         cells = newCells;
@@ -30,7 +33,7 @@ public class World {
 
     public boolean isEmpty() {
         for (Cell cell: cells.values()) {
-            if (cell.isAlive()){
+            if (cell.state() == CellState.IS_ALIVE || cell.state() == CellState.IS_ZOMBIE){
                 return false;
             }
         }
@@ -41,8 +44,8 @@ public class World {
         cells.put(location, new AliveCell());
     }
 
-    public boolean isAlive(Location location) {
-        return cells.get(location).isAlive();
+    public CellState cellStateAtLocation(Location location) {
+        return cells.get(location).state();
     }
 
     private Map<Location,Cell> initCells() {
@@ -57,7 +60,7 @@ public class World {
         int aliveNeighbours = 0;
 
         for (Location location : l.allNeighbours(DEFAULT_WIDTH, DEFAULT_HEIGHT)){
-            if (cells.get(location).isAlive()){
+            if (cells.get(location).state() == CellState.IS_ALIVE || cells.get(location).state() == CellState.IS_ZOMBIE){
                 aliveNeighbours++;
             }
         }
